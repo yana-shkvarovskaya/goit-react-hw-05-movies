@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { animateScroll as scroll } from 'react-scroll';
 import moviesApi from 'services/movies-api';
+import './Reviews.css';
 
 export default function Reviews() {
   const { movieId } = useParams();
@@ -13,7 +14,7 @@ export default function Reviews() {
   return (
     <>
       {reviews && reviews.length > 0 ? (
-        <ul>
+        <ul className="reviews">
           {reviews.map(({ id, author, content }) => (
             <li key={id}>
               <h2>Author: {author}</h2>
@@ -22,7 +23,7 @@ export default function Reviews() {
           ))}
         </ul>
       ) : (
-        <p>We don't have reviews for this movie.</p>
+        <p className="reviews__phrase">We don't have reviews for this movie.</p>
       )}
     </>
   );

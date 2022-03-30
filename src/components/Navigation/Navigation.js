@@ -6,10 +6,7 @@ const Navigation = () => (
     <NavLink
       exact="true"
       to="/"
-      //   className={styles.link}
       className={({ isActive }) => (isActive ? 'active' : 'inactive')}
-      //   activeClassName="active"
-      //   activeclassname={styles.activeLink}
     >
       Home
     </NavLink>

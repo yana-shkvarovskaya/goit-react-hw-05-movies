@@ -1,0 +1,10 @@
+.reviews{
+    font-size: 14px;
+    margin-bottom: 50px;
+}
+
+.reviews__phrase{
+    display: block;
+    margin-bottom: 30px;
+    min-height: 300px;
+}

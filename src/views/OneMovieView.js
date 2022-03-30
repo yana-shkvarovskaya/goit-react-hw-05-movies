@@ -9,14 +9,9 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { animateScroll as scroll } from 'react-scroll';
 import PageHeading from 'components/PageHeading/PageHeading';
 import moviesApi from 'services/movies-api';
-import Cast from 'components/Cast/Cast';
-import Reviews from 'components/Reviews/Reviews';
-// import s from './MovieDetailsPage.module.css';
 
-// const Cast = lazy(() => import('../Cast/Cast' /*webpackChunkName: 'Cast'*/));
-// const Reviews = lazy(() =>
-//   import('../Reviews/Rewievs' /*webpackChunkName: 'Reviews'*/)
-// );
+const Cast = lazy(() => import('components/Cast/Cast'));
+const Reviews = lazy(() => import('components/Reviews/Reviews'));
 
 export default function OneMovieView() {
   const { movieId } = useParams();
@@ -87,13 +82,14 @@ export default function OneMovieView() {
           <hr />
           <p>Additional information</p>
 
-          <ul>
-            <li>
+          <ul className="additionalInformation">
+            <li className="nav">
               <NavLink
                 to={{
                   pathname: `/movies/${movieId}/cast`,
                 }}
                 onClick={onVisibleCast}
+                className={({ isActive }) => (isActive ? 'active' : 'inactive')}
               >
                 Cast
               </NavLink>
@@ -105,23 +101,19 @@ export default function OneMovieView() {
                   pathname: `/movies/${movieId}/reviews`,
                 }}
                 onClick={onVisibleReviews}
+                className={({ isActive }) => (isActive ? 'active' : 'inactive')}
               >
                 Reviews
               </NavLink>
             </li>
           </ul>
           <hr />
-          <Routes>
-            {/* <Suspense fallback={<div>Loading...</div>}> */}
-            <Route path="/cast" element={<Cast id={movieId} />}>
-              {/* {movie && visibleCast && <Cast />} */}
-            </Route>
-
-            <Route path="/reviews" element={<Reviews id={movieId} />}>
-              {/* {movie && visibleReviews && <Reviews />} */}
-            </Route>
-          </Routes>
-          {/* </Suspense> */}
+          <Suspense fallback={<h2>Loading...</h2>}>
+            <Routes>
+              <Route path="/cast" element={<Cast id={movieId} />}></Route>
+              <Route path="/reviews" element={<Reviews id={movieId} />}></Route>
+            </Routes>
+          </Suspense>
         </>
       )}
     </>
