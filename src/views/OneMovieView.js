@@ -30,7 +30,7 @@ export default function OneMovieView() {
 
   const onBackClick = e => {
     e.preventDefault();
-    navigate(-1);
+    navigate('/');
   };
 
   const onVisibleCast = () => {
