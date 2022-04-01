@@ -1,30 +1,42 @@
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { animateScroll as scroll } from 'react-scroll';
-import moviesApi from 'services/movies-api';
-import './Reviews.css';
+import { MovieReview } from '../Services/MovieDB';
 
-export default function Reviews() {
-  const { movieId } = useParams();
-  const [reviews, setReviews] = useState(null);
+export const Reviews = () => {
+  const [reviews, setReviews] = useState([]);
+
+  const location = useLocation();
+  const preId = location.pathname.slice(8);
+  const id = preId.slice(0, -8);
+
   useEffect(() => {
-    moviesApi.fetchApiMovieReviews(movieId).then(setReviews);
-    scroll.scrollMore(600);
-  }, [movieId]);
-  return (
-    <>
-      {reviews && reviews.length > 0 ? (
-        <ul className="reviews">
-          {reviews.map(({ id, author, content }) => (
-            <li key={id}>
-              <h2>Author: {author}</h2>
-              <p>{content}</p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="reviews__phrase">We don't have reviews for this movie.</p>
-      )}
-    </>
-  );
-}
+    async function Reviews() {
+      try {
+        const reviewItem = await MovieReview(id);
+        setReviews(reviewItem);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    Reviews();
+  }, [id]);
+
+  if (reviews.length !== 0) {
+    return (
+      <ul className="reviews">
+        {reviews.map(({ id, author, content }) => (
+          <li key={id}>
+            <p className="review">author: {author}</p>
+            <p>{content}</p>
+          </li>
+        ))}
+      </ul>
+    );
+  } else {
+    return (
+      <h3 className="reviews__phrase">
+        We don`t have any reviews for this movie
+      </h3>
+    );
+  }
+};
